@@ -3,6 +3,7 @@ import UserList from "./components/UserList";
 import AddUser from "./components/AddUser";
 import EditUser from "./components/EditUser";
 import ProdukList from "./components/ProdukList";
+import AddProduk from "./components/AddProduk";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<UserList/>}/>
         <Route path="/produks" element={<ProdukList/>}/>
         <Route path="add" element={<AddUser/>}/>
+        <Route path="/addProduk" element={<AddProduk/>}/>
         <Route path="edit/:id" element={<EditUser/>}/>
       </Routes>
     </BrowserRouter>

@@ -26,9 +26,9 @@ const ProdukList = () => {
   return (
     <div className="columns mt-5 is-centered">
       <div className="column is-half">
-        <Link to={`add`} className="button is-success">
-        Add New
-      </Link>
+        <Link to={`/addProduk`} className="button is-success">
+          Add New
+        </Link>
         <table className="table is-striped is-fullwidth">
           <thead>
             <tr>
