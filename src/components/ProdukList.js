@@ -48,7 +48,7 @@ const ProdukList = () => {
                 <td>{produk.deskripsi}</td>
                 <td>
                   <Link
-                    to={`edit/${produk.id}`}
+                    to={`/editproduk/${produk.id}`}
                     className="button is-small is-info mr-2"
                   >
                     Edit

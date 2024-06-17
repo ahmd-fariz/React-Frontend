@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddProduk = () => {
+const EditProduk = () => {
   const [name, setName] = useState("");
   const [harga, setHarga] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const saveProduk = async (e) => {
+  useEffect(() => {
+    getProdukById();
+  }, []);
+
+  const updateProduk = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/produks", {
+      await axios.patch(`http://localhost:5000/produks/${id}`, {
         name,
         harga,
         deskripsi,
@@ -22,10 +27,17 @@ const AddProduk = () => {
     }
   };
 
+  const getProdukById = async () => {
+    const response = await axios.get(`http://localhost:5000/produks/${id}`);
+    setName(response.data.name);
+    setHarga(response.data.harga);
+    setDeskripsi(response.data.deskripsi);
+  };
+
   return (
     <div className="columns mt-5 is-centered">
       <div className="column is-half">
-        <form onSubmit={saveProduk}>
+        <form onSubmit={updateProduk}>
           <div className="field">
             <label className="label">Name</label>
             <div className="control">
@@ -73,4 +85,4 @@ const AddProduk = () => {
   );
 };
 
-export default AddProduk;
+export default EditProduk;
