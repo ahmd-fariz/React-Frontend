@@ -33,6 +33,7 @@ const ProdukList = () => {
           <thead>
             <tr>
               <th>No</th>
+              <th>Image</th>
               <th>Name</th>
               <th>Harga</th>
               <th>Deskripsi Produk</th>
@@ -42,6 +43,7 @@ const ProdukList = () => {
           <tbody>
             {produks.map((produk, index) => (
               <tr key={produk.id}>
+                <td><img src={produk.url} /></td>
                 <td>{index + 1}</td>
                 <td>{produk.name}</td>
                 <td>{produk.harga}</td>
