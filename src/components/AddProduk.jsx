@@ -6,15 +6,28 @@ const AddProduk = () => {
   const [name, setName] = useState("");
   const [harga, setHarga] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
+  const [file, setFile] = useState("");
+  const [preview, setpreview] = useState("");
   const navigate = useNavigate();
+
+  const loadImage = (e) => {
+    const image = e.target.files[0];
+    setFile(image);
+    setpreview(URL.createObjectURL(image));
+  };
 
   const saveProduk = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", name);
+    formData.append("harga", harga);
+    formData.append("deskripsi", deskripsi);
     try {
-      await axios.post("http://localhost:5000/produks", {
-        name,
-        harga,
-        deskripsi,
+      await axios.post("http://localhost:5000/produks", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       navigate("/produks");
     } catch (error) {
@@ -50,6 +63,32 @@ const AddProduk = () => {
               />
             </div>
           </div>
+          <div className="field">
+            <label className="label">Image</label>
+            <div className="control">
+              <div className="file">
+                <label className="file-label">
+                  <input
+                    type="file"
+                    className="file-input"
+                    onChange={loadImage}
+                  />
+                  <span className="file-cta">
+                    <span className="file-label">Pilih File</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {preview ? (
+            <figure className="image is-128x128">
+              <img src={preview} alt="Preview Image" />
+            </figure>
+          ) : (
+            ""
+          )}
+
           <div className="field">
             <label className="label">Deskripsi</label>
             <div className="control">
