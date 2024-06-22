@@ -17,21 +17,18 @@ const EditProduk = () => {
     setPreview(URL.createObjectURL(image));
   };
 
-  const getProdukById = useCallback(async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/produks/${id}`);
-      setName(response.data.name);
-      setHarga(response.data.harga);
-      setFile(response.data.image);
-      setDeskripsi(response.data.deskripsi);
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
-  }, [id]);
-
   useEffect(() => {
     getProdukById();
-  }, [getProdukById]);
+  }, []);
+
+  const getProdukById = async () => {
+    const response = await axios.get(`http://localhost:5000/produks/${id}`);
+    setName(response.data.name);
+    setHarga(response.data.harga);
+    setFile(response.data.image);
+    setPreview(response.data.url);
+    setDeskripsi(response.data.deskripsi);
+  };
 
   const updateProduk = async (e) => {
     e.preventDefault();
@@ -120,7 +117,7 @@ const EditProduk = () => {
           </div>
           <div className="field">
             <button type="submit" className="button is-success">
-              Save
+              Update
             </button>
           </div>
         </form>
