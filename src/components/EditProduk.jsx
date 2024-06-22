@@ -1,37 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditProduk = () => {
   const [name, setName] = useState("");
   const [harga, setHarga] = useState("");
+  const [file, setFile] = useState("");
+  const [preview, setPreview] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const loadImage = (e) => {
+    const image = e.target.files[0];
+    setFile(image);
+    setPreview(URL.createObjectURL(image));
+  };
+
+  const getProdukById = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/produks/${id}`);
+      setName(response.data.name);
+      setHarga(response.data.harga);
+      setFile(response.data.image);
+      setDeskripsi(response.data.deskripsi);
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  }, [id]);
+
   useEffect(() => {
     getProdukById();
-  }, []);
+  }, [getProdukById]);
 
   const updateProduk = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", name);
+    formData.append("harga", harga);
+    formData.append("deskripsi", deskripsi);
     try {
-      await axios.patch(`http://localhost:5000/produks/${id}`, {
-        name,
-        harga,
-        deskripsi,
+      await axios.patch(`http://localhost:5000/produks/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       navigate("/produks");
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const getProdukById = async () => {
-    const response = await axios.get(`http://localhost:5000/produks/${id}`);
-    setName(response.data.name);
-    setHarga(response.data.harga);
-    setDeskripsi(response.data.deskripsi);
   };
 
   return (
@@ -62,6 +80,32 @@ const EditProduk = () => {
               />
             </div>
           </div>
+          <div className="field">
+            <label className="label">Image</label>
+            <div className="control">
+              <div className="file">
+                <label className="file-label">
+                  <input
+                    type="file"
+                    className="file-input"
+                    onChange={loadImage}
+                  />
+                  <span className="file-cta">
+                    <span className="file-label">Pilih File</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {preview ? (
+            <figure className="image is-128x128">
+              <img src={preview} alt="Preview Image" />
+            </figure>
+          ) : (
+            ""
+          )}
+
           <div className="field">
             <label className="label">Deskripsi</label>
             <div className="control">

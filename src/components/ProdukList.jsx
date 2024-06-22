@@ -43,7 +43,9 @@ const ProdukList = () => {
           <tbody>
             {produks.map((produk, index) => (
               <tr key={produk.id}>
-                <td><img src={produk.url} /></td>
+                <td>
+                  <img src={produk.url} />
+                </td>
                 <td>{index + 1}</td>
                 <td>{produk.name}</td>
                 <td>{produk.harga}</td>
