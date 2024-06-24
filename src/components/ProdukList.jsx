@@ -61,7 +61,7 @@ const ProdukList = () => {
                     onClick={() => deleteProduk(produk.id)}
                     className="button is-small is-danger"
                   >
-                    Delete
+                    Delete  
                   </button>
                 </td>
               </tr>
